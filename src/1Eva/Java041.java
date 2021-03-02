@@ -1,4 +1,3 @@
-package Eva1;
 
 public class Java041 {
 

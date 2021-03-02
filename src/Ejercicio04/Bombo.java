@@ -1,5 +1,5 @@
 
-package Ejercicio4;
+package Ejercicio04;
 import java.util.Random;
 public class Bombo {
 	private int bolas[];

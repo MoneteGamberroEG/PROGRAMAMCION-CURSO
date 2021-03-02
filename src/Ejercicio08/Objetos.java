@@ -1,3 +1,6 @@
+/*
+ * Manipula Objetos de clases de Java
+ */
 package Ejercicio08;
 
 import java.awt.*;
@@ -11,16 +14,14 @@ public class Objetos extends Frame {
     }
 
     public Objetos() {
-        super("Trabajando con objetos");
-
+        super("Trabajando con objetos de Java");
         setup();
-
-        this.pack();
+        pack();
         resize(400, 400);
         show();
     }
 
-    public void setup() {
+    private void setup() {
         Panel principal = new Panel();
         principal.setLayout(new GridLayout(3, 3));
         Panel paneles[][] = new Panel[3][3];
@@ -30,175 +31,157 @@ public class Objetos extends Frame {
                 paneles[i][j].setLayout(new FlowLayout(FlowLayout.LEFT));
             }
         }
-        paneles[0][0].add(new Label("Campo de texto"));
+        paneles[0][0].add(new Label("Campo de texto: "));
         paneles[0][0].add(new MiTextField("", 15));
 
-        textArea = new TextArea("", 5, 15);
+        textArea = new TextArea(5, 10);
+        textArea.setBackground(Color.YELLOW);
         paneles[0][1].add(textArea);
 
-        paneles[0][2].add(new MiBoton("Borrar", textArea));
+        paneles[0][2].add(new MiBoton("Limpiar", textArea));
 
-        paneles[1][0].add(new MiCanvas());
+        String opciones[] = {"Si", "No", "Quizás"};
+        paneles[1][0].add(new MiChoice(opciones, textArea));
 
-        String choiceStrings[] = {"Sí", "No", "Quizas"};
-        paneles[1][1].add(new MiChoice(choiceStrings, textArea));
+        String deportes[] = {"Atletismo", "Baloncesto", "Tenis", "Alterofília", "Esgrima", "Balonmano", "Equitación", "Patinaje"};
+        paneles[1][1].add(new MiLista(deportes, textArea));
 
-        String deportes[] = {"Fútbol", "Baloncesto", "Petanca", "Badminton", "ESports", "Dardos"};
-        paneles[1][2].add(new MiLista(deportes, textArea));
+        paneles[1][2].add(new MiCanvas());
 
-        String asignaturas[] = {"Programación", "Lenguaje de marcas", "Bases de Datos", "Sistemas informaticos"};
-
-        paneles[2][0].add(new MiCheckboxes(asignaturas));
+        String comidas[] = {"Patatas", "Cebollas", "Tomates", "Lechuga"};
+        paneles[2][0].add(new MiCheckBoxGroup(comidas));
 
         paneles[2][1].add(new MiScrollbar(Scrollbar.VERTICAL, 50, 10, 0, 100, textArea));
+
         paneles[2][2].add(new MiScrollbar(Scrollbar.HORIZONTAL, 50, 10, 0, 100, textArea));
 
-        for (int i = 0; i < paneles.length; i++) {
-            for (int j = 0; j < paneles[0].length; j++) {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
                 principal.add(paneles[i][j]);
             }
         }
-        principal.add(paneles[0][0]);
-        principal.add(paneles[0][1]);
-        principal.add(paneles[0][2]);
-        principal.add(paneles[1][0]);
-        principal.add(paneles[1][1]);
-        principal.add(paneles[1][2]);
-        principal.add(paneles[2][0]);
-
         this.add(principal);
     }
 
     public boolean handleEvent(Event ev) {
-
         if (ev.id == Event.WINDOW_DESTROY) {
             System.exit(0);
             return true;
-        } else if (ev.id == Event.ACTION_EVENT) {
-            if (ev.target instanceof Button) {
-                if ("Borrar".equals(ev.arg)) {
-                    return true;
-                }
-            }
         }
         return false;
     }
-
 }
 
 class MiTextField extends TextField {
 
     public MiTextField(String frase, int columnas) {
         super(frase, columnas);
-
     }
 
-    public boolean action(Event ev, Object arg) {
+    public boolean action(Event ev, Object ob) {
         String texto = this.getText();
         this.setText(texto.toUpperCase());
         return true;
     }
-
 }
 
 class MiBoton extends Button {
 
-    TextArea tt;
+    TextArea texto;
 
-    public MiBoton(String frase, TextArea texto) {
-        super(frase);
-        tt = texto;
+    public MiBoton(String borrar, TextArea texto) {
+        super(borrar);
+        this.texto = texto;
     }
 
     public boolean action(Event ev, Object ob) {
-        tt.setText(" ");
-        return true;
-    }
-
-}
-
-class MiCanvas extends Canvas {
-
-    int posX = 20;
-    int posY = 20;
-
-    public MiCanvas() {
-        super();
-        resize(75, 75);
-        setBackground(Color.yellow);
-        setForeground(Color.red);
-        show();
-    }
-
-    public void paint(Graphics g) {
-        g.fillRect(posX, posY, 5, 5);
-    }
-
-    public boolean mouseDown(Event ev, int x, int y) {
-
-        posX = x;
-        posY = y;
-        repaint();
-
+        texto.setText(" ");
         return true;
     }
 }
 
 class MiChoice extends Choice {
 
-    public MiChoice(String elementos[], TextArea texto) {
+    TextArea texto;
+
+    public MiChoice(String[] opciones, TextArea texto) {
         super();
-        for (int i = 0; i < elementos.length; i++) {
-            this.addItem(elementos[i]);
+        for (int i = 0; i < opciones.length; i++) {
+            this.add(opciones[i]);
         }
-        tt = texto;
+        this.texto = texto;
     }
 
-    public boolean action(Event ev, Object o) {
-        tt.setText(getSelectedItem());
+    public boolean action(Event ev, Object ob) {
+        this.texto.setText(this.getSelectedItem());
         return true;
     }
 }
 
 class MiLista extends List {
 
-    TextArea tt;
+    TextArea texto;
 
-    public MiLista(String deportes[], TextArea texto) {
+    public MiLista(String[] deportes, TextArea texto) {
         super(5, true);
         for (int i = 0; i < deportes.length; i++) {
-            this.addItem(deportes[i]);
+            this.add(deportes[i]);
         }
-        tt = texto;
+        this.texto = texto;
     }
 
     public boolean handleEvent(Event ev) {
         if (ev.id == Event.ACTION_EVENT) {
-            tt.setText("Doble click");
+            this.texto.setText("Doble click");
             return true;
         } else if (ev.id == Event.LIST_SELECT) {
-            tt.setText("Elemento Seleccionado");
+            this.texto.setText("Selecciono un item");
             return true;
         } else if (ev.id == Event.LIST_DESELECT) {
-            tt.setText("Elemento Deselccionado");
+            this.texto.setText("Deseleccionó un item");
             return true;
         }
         return false;
     }
 }
 
-class MiCheckboxes extends Panel {
+class MiCanvas extends Canvas {
 
-    Checkbox checkboxes[];
+    int posx = 20;
+    int posy = 20;
+
+    public MiCanvas() {
+        super();
+        this.resize(75, 75);
+        this.setBackground(Color.YELLOW);
+        this.setForeground(Color.RED);
+        this.show();
+    }
+
+    public void paint(Graphics g) {
+        g.fillRect(posx, posy, 5, 5);
+    }
+
+    public boolean mouseDown(Event ev, int x, int y) {
+        posx = x;
+        posy = y;
+        repaint();
+        return true;
+    }
+}
+
+class MiCheckBoxGroup extends Panel {
+
+    Checkbox checkBoxes[];
     TextField resultado;
 
-    public MiCheckboxes(String[] elementos) {
+    public MiCheckBoxGroup(String[] elementos) {
         super();
         this.setLayout(new GridLayout(elementos.length + 1, 1));
-        checkboxes = new Checkbox[elementos.length];
+        checkBoxes = new Checkbox[elementos.length];
         for (int i = 0; i < elementos.length; i++) {
-            checkboxes[i] = new Checkbox(elementos[i]);
-            this.add(checkboxes[i]);
+            checkBoxes[i] = new Checkbox(elementos[i]);
+            this.add(checkBoxes[i]);
         }
         resultado = new TextField("", 15);
         this.add(resultado);
@@ -207,27 +190,41 @@ class MiCheckboxes extends Panel {
     public boolean handleEvent(Event ev) {
         if (ev.id == Event.ACTION_EVENT) {
             if (ev.target instanceof Checkbox) {
-
+                String mostrar = "";
+                for (int i = 0; i < checkBoxes.length; i++) {
+                    if (checkBoxes[i].getState()) {
+                        mostrar += checkBoxes[i].getLabel() + " ";
+                    }
+                }
+                resultado.setText(mostrar);
+                return true;
             }
         }
+        return false;
     }
 }
 
-class MiScrollar extends Scrollbar {
+class MiScrollbar extends Scrollbar {
 
-    TextArea texto;
+    TextArea text;
 
-    public MiScrollbar(int orientacion, int posicion, int anchura, int inicio, int fin) {
-        super(orientacion, posicion, anchura, inicio, fin);
-        texto = tt;
+    public MiScrollbar(int orientacion, int position, int width, int start, int end, TextArea text) {
+        super(orientacion, position, width, start, end);
+        this.text = text;
     }
 
     public boolean handleEvent(Event ev) {
         if (ev.id == Event.SCROLL_LINE_UP) {
-            texto.setText("Posicion: " + this.getValue());
+            text.setText("Posición: " + this.getValue());
+        } else if (ev.id == Event.SCROLL_LINE_DOWN) {
+            text.setText("Posición: " + this.getValue());
+        } else if (ev.id == Event.SCROLL_PAGE_UP) {
+            text.setText("Posición: " + this.getValue());
+        } else if (ev.id == Event.SCROLL_PAGE_DOWN) {
+            text.setText("Posición: " + this.getValue());
+        } else if (ev.id == Event.SCROLL_ABSOLUTE) {
+            text.setText("Posición: " + this.getValue());
         }
-
+        return false;
     }
-
-return false;
 }

@@ -1,3 +1,4 @@
+package Ejercicio01;
 
 public class Primera {
 
@@ -7,7 +8,7 @@ public class Primera {
 		Chalet chalet1;
 		
 		casa1 = new Casa("C/. Huesca, 3", 100, 5, 2);
-		casa2 = new Casa("C/. Alberadán, 56", 120, 6, 3);
+		casa2 = new Casa("C/. Alberadon, 56", 120, 6, 3);
 		chalet1 = new Chalet("Camino de los Molinos, 5", 150, 5, 2, 300, true);
 		Chalet chalet2 = new Chalet("Carretera del aeropuerto, km.10", 225, false);
 		
@@ -19,7 +20,7 @@ public class Primera {
 		chalet2.setNumM(75);
 		chalet2.mostrar();
 		
-		System.out.println("Dirección de casa1 " + casa1.getDireccion());
+		System.out.println("Direccion de casa1 " + casa1.getDireccion());
 		casa3.mostrar();
 	}
 
